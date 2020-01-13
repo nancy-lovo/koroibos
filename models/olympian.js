@@ -8,6 +8,10 @@ class Olympian {
   static youngest() {
   return database('olympic').orderBy('age').select(['name', 'team', 'age', 'sport', database.raw(`(case when olympic.medal is null then 0 end) as total_medals_won`)]).limit(1)
 };
+
+  static oldest() {
+    return database('olympic').orderBy('age', 'desc').select(['name', 'team', 'age', 'sport', database.raw(`(case when olympic.medal is null then 0 end) as total_medals_won`)]).limit(1)
+  };
 }
 
  module.exports = Olympian;
