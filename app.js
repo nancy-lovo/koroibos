@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/v1/', olympiansRouter);
+app.use('/api/v1', olympiansRouter);
 app.use((req, res, next)=>{
   res.status(404).send({message:"Not Found"});
 });
