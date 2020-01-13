@@ -36,8 +36,22 @@ describe('test get all olympians', () => {
       "medal": null
     };
 
+    let dascl = {
+      "name": "Ana Iulia Dascl",
+      "sex": "F",
+      "age": 13,
+      "height": 183,
+      "weight": 60,
+      "team": "Romania",
+      "games": "2016 Summer",
+      "sport": "Swimming",
+      "event": "Swimming Women's 100 metres Freestyle",
+      "medal": null
+    };
+
     await database('olympic').insert(aanei, 'id');
     await database('olympic').insert(sanjun, 'id');
+    await database('olympic').insert(dascl, 'id');
   });
 
   afterEach(() => {
@@ -73,5 +87,36 @@ describe('test get all olympians', () => {
       expect(res.statusCode).toBe(404);
       expect(res.body.message).toEqual('Not Found');
     });
+  });
+
+  describe('test GET youngest olympian', () => {
+    it('happy path', async () => {
+      const res = await request(app).get("/api/v1/olympians?age=youngest");
+
+      expect(res.statusCode).toBe(200);
+
+      expect(res.body['data'][0]).toHaveProperty('name');
+      expect(res.body['data'][0].name).toEqual('Ana Iulia Dascl');
+
+      expect(res.body['data'][0]).toHaveProperty('team');
+      expect(res.body['data'][0].team).toEqual('Romania');
+
+      expect(res.body['data'][0]).toHaveProperty('age');
+      expect(res.body['data'][0].age).toEqual(13);
+
+      expect(res.body['data'][0]).toHaveProperty('sport');
+      expect(res.body['data'][0].sport).toEqual('Swimming');
+
+      expect(res.body['data'][0]).toHaveProperty('total_medals_won');
+      expect(res.body['data'][0].total_medals_won).toEqual(0)
+
+    });
+  });
+
+  it('sad path', async () => {
+    const res = await request(app).get("/api/v1/olympian?age=middle");
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toEqual('Not Found');
   });
 });
