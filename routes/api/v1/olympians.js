@@ -4,7 +4,7 @@ const olympian = require('../../../models/olympian.js');
 
 router.get('/olympians', (request, response) => {
   let age = request.query.age;
-
+  
   if (age === 'youngest') {
     olympian.youngest()
       .then((data) => {

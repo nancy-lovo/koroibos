@@ -112,4 +112,11 @@ describe('test get all olympians', () => {
 
     });
   });
+
+  it('sad path', async () => {
+    const res = await request(app).get("/api/v1/olympian?age=middle");
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toEqual('Not Found');
+  });
 });
