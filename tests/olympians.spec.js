@@ -165,4 +165,34 @@ describe('test get all olympians', () => {
     });
   });
 
+  describe('test GET olympian stats', () => {
+    it('happy path', async () => {
+      const res = await request(app).get("/api/v1/olympian_stats");
+
+      expect(res.statusCode).toBe(200);
+
+      expect(res.body['olympian_stats']).toHaveProperty('total_competing_olympians');
+      expect(res.body['olympian_stats'].total_competing_olympians).toEqual(4);
+
+      expect(res.body['olympian_stats']).toHaveProperty('average_weight');
+      expect(res.body['olympian_stats'].average_weight).toHaveProperty('unit');
+      expect(res.body['olympian_stats'].average_weight.unit).toEqual('kg');
+
+      expect(res.body['olympian_stats'].average_weight).toHaveProperty('male_olympians');
+      expect(res.body['olympian_stats'].average_weight.male_olympians).toEqual(64);
+
+      expect(res.body['olympian_stats'].average_weight).toHaveProperty('female_olympians');
+      expect(res.body['olympian_stats'].average_weight.female_olympians).toEqual(77.7);
+
+      expect(res.body['olympian_stats']).toHaveProperty('average_age');
+      expect(res.body['olympian_stats'].average_age).toEqual(30);
+    });
+
+    it('sad path', async () => {
+      const res = await request(app).get("/api/v1/olympianstats");
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual('Not Found');
+    });
+  });
 });
