@@ -66,5 +66,12 @@ describe('test get all olympians', () => {
       expect(res.body['olympians'][0].total_medals_won).toEqual(0)
 
     });
+
+    it('sad path', async () => {
+      const res = await request(app).get("/api/v1/olympian");
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual('Not Found');
+    });
   });
 });
