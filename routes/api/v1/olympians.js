@@ -55,4 +55,15 @@ router.get('/olympian_stats', cors(), async (request, response) => {
     });
 });
 
+router.get('/country_stats', cors(), async (request, response) => {
+  olympian.country_stats()
+    .then((data) => {
+      let result = { "countries": data }
+      return response.status(200).json(result);
+    })
+    .catch((error) => {
+      return response.status(500).json({ error });
+    });
+});
+
 module.exports = router;
