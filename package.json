@@ -25,7 +25,8 @@
     "express": "^4.17.1",
     "knex": "^0.20.7",
     "morgan": "^1.9.1",
-    "pg": "^7.17.1"
+    "pg": "^7.17.1",
+    "swagger-ui-express": "^4.1.2"
   },
   "devDependencies": {
     "babel-jest": "^24.9.0",

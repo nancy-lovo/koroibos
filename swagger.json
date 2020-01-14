@@ -1,0 +1,68 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Koroibos API",
+    "version": "1.0",
+    "description": "A short API doc describes some of the endpoints for the Koroibos API through the Swagger specification"
+  },
+  "host": "koroibos-olympic-2020.herokuapp.com",
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/olympians": {
+      "get": {
+        "description": "Get all olympians.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "definitions": {
+              "olympians": {
+                "type": "object",
+                "properties": {
+                  "olympians": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/olympian"
+                    }
+                  }
+                }
+              },
+              "olympian": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                      "type": "string"
+                  },
+                  "team": {
+                      "type": "string"
+                  },
+                  "age": {
+                      "type": "integer"
+                  },
+                  "sport": {
+                      "type": "string"
+                  },
+                  "total_medals_won": {
+                      "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
