@@ -5,7 +5,7 @@
     "version": "1.0",
     "description": "A short API doc describes some of the endpoints for the Koroibos API through the Swagger specification"
   },
-  "host": "koroibos-olympic-2020.herokuapp.com",
+  "host": "localhost:3000",
   "servers": [
     {
       "url": "http://localhost:3000"
@@ -24,44 +24,197 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+             "name": "age",
+             "in": "query",
+             "description": "youngest or oldest",
+             "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
-            "definitions": {
-              "olympians": {
-                "type": "object",
-                "properties": {
-                  "olympians": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/olympian"
-                    }
+            "schema": {
+              "type": "object",
+              "properties": {
+                "olympians": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/olympian"
                   }
                 }
-              },
-              "olympian": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                      "type": "string"
-                  },
-                  "team": {
-                      "type": "string"
-                  },
-                  "age": {
-                      "type": "integer"
-                  },
-                  "sport": {
-                      "type": "string"
-                  },
-                  "total_medals_won": {
-                      "type": "integer"
+              }
+            }
+
+          }
+        }
+      }
+    },
+    "/api/v1/olympian_stats": {
+      "get": {
+        "description": "Get olympian stats.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "olympian_stats": {
+                  "type": "object",
+                  "properties": {
+                    "total_competing_olympians": {
+                      "type": "integer",
+                      "description": "number of unique participants"
+                    },
+                    "average_weight": {
+                      "type": "object",
+                      "description": "average male and female weights",
+                      "properties": {
+                        "unit": {
+                          "type": "string",
+                          "description": "kg"
+                        },
+                        "male_olympians": {
+                          "type": "integer",
+                          "description": "average weight of male olympians"
+                        },
+                        "female_olympians": {
+                          "type": "integer",
+                          "description": "average weight of male olympians"
+                        }
+                      }
+                    },
+                    "average_age": {
+                      "type": "integer",
+                      "description": "average age of total total_competing_olympians"
+                    }
                   }
                 }
               }
             }
           }
         }
+      }
+    },
+    "/api/v1/events": {
+      "get": {
+        "description": "Get all olympic events.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/sport_events"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/events/{Id}/medalists": {
+      "get": {
+        "description": "Get all medalists of a given event.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "description": "Filter events by ID and return all medalists related to the given event.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "event": {
+                  "type": "string",
+                  "description": "name of the olympic event"
+                },
+                "medalists": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/medalists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "olympian": {
+      "type": "object",
+      "properties": {
+        "name": {
+            "type": "string"
+        },
+        "team": {
+            "type": "string"
+        },
+        "age": {
+            "type": "integer"
+        },
+        "sport": {
+            "type": "string"
+        },
+        "total_medals_won": {
+            "type": "integer"
+        }
+      }
+    },
+    "sport_events": {
+      "type": "object",
+      "properties": {
+        "sport": {
+         "type": "string",
+         "description": "name of the sport"
+        },
+        "events": {
+         "type": "array",
+         "description": "a list of events related to the given sport"
+        }
+      }
+    },
+    "medalists": {
+      "type": "object",
+      "properties": {
+        "name": {
+         "type": "string",
+         "description": "name of the olympian"
+        },
+        "team": {
+         "type": "string",
+         "description": "team that olympian belongs to"
+        },
+        "age": {
+         "type": "integer",
+         "description": "age of the olympian"
+       },
+       "medal": {
+        "type": "string",
+        "description": "bronze, silver, gold, or 0"
+       }
       }
     }
   }
