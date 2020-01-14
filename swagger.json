@@ -5,7 +5,7 @@
     "version": "1.0",
     "description": "A short API doc describes some of the endpoints for the Koroibos API through the Swagger specification"
   },
-  "host": "koroibos-olympic-2020.herokuapp.com/api/v1/olympians",
+  "host": "koroibos-olympic-2020.herokuapp.com",
   "servers": [
     {
       "url": "http://localhost:3000"
@@ -160,6 +160,30 @@
           }
         }
       }
+    },
+    "/api/v1/country_stats": {
+      "get": {
+        "description": "Get a list of all countries and sports they're participating.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "countries": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/countries"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -216,6 +240,26 @@
         "description": "bronze, silver, gold, or 0"
        }
       }
+    },
+    "countries": {
+      "type": "object",
+      "properties": {
+        "team": {
+         "type": "string",
+         "description": "name of the country"
+        },
+        "sports": {
+         "type": "array",
+         "description": "a list of sports that the given country participates in Olympic",
+         "items": {
+           "$ref": "#/definitions/sports_by_country"
+         }
+        }
+      }
+    },
+    "sports_by_country": {
+      "type": "string",
+      "description": "name of the sport"
     }
   }
 }
