@@ -59,13 +59,13 @@ describe('test get all events', () => {
       "games": "2016 Summer",
       "sport": "Equestrianism",
       "event": "Equestrianism Mixed Dressage, Individual",
-      "medal": null
+      "medal": 'Silver'
     };
 
     await database('olympic').insert(aanei, 'id');
     await database('olympic').insert(sanjun, 'id');
     await database('olympic').insert(dascl, 'id');
-    await database('olympic').insert(brougham, 'id');
+    await database('olympic').insert(brougham, 'id')
   });
 
   afterEach(() => {
@@ -93,4 +93,64 @@ describe('test get all events', () => {
       expect(res.body.message).toEqual('Not Found');
     });
   });
+
+  describe('test medalists by event id GET', () => {
+    beforeEach(async () => {
+      await database.raw('truncate table events cascade');
+    });
+
+    afterEach(() => {
+      database.raw('truncate table olympic cascade');
+      database.raw('truncate table events cascade');
+    });
+
+    it('happy path', async () => {
+      let brougham = {
+        "name": "Julie Brougham",
+        "sex": "F",
+        "age": 62,
+        "height": 157,
+        "weight": 48,
+        "team": "New Zealand",
+        "games": "2016 Summer",
+        "sport": "Equestrianism",
+        "event": "Equestrianism Mixed Dressage, Individual",
+        "medal": 'Silver'
+      };
+
+      await database('olympic').insert(brougham, 'id')
+        .then(id => {
+          let equestrian_1 = {
+            "event": "Equestrianism Mixed Dressage, Individual",
+            "event_id": 1,
+            "medal": "Silver",
+            "olympian_id": id
+          }
+
+          database('events').insert(equestrian_1, 'id')
+            .then(event_id => {
+              const res = request(app).get(`/api/v1/events/${event_id}/medalists`);
+
+              expect(res.statusCode).toBe(200);
+
+              expect(res.body).toHaveProperty('event');
+              expect(res.body).toHaveProperty('medalists');
+            })
+        })
+    });
+
+    it('sad path id out of range case 1', async () => {
+      const res = await request(app).get("/api/v1/events/80/medalists");
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual('id is out of range. Valid range of id is 0 < id < 80');
+    });
+
+    it('sad path id out of range case 2', async () => {
+      const res = await request(app).get("/api/v1/events/0/medalists");
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual('id is out of range. Valid range of id is 0 < id < 80');
+    });
+   });
 });
