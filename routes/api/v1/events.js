@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const events = require('../../../models/events.js');
+const cors = require('cors')
 
-
-router.get('/', (request, response) => {
+router.get('/', cors(), (request, response) => {
   events.all()
     .then((data) => {
       let result = { "events": data }
@@ -14,7 +14,7 @@ router.get('/', (request, response) => {
     });
 })
 
-router.get('/:id/medalists', (request, response) => {
+router.get('/:id/medalists', cors(), (request, response) => {
   var id = request.params.id
   // total number of unique events = 79
   if (id < 1 || id > 79) {
