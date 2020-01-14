@@ -38,6 +38,13 @@ class Olympian {
       olympian.average_age().then(res => Number(res[0].avg))
     ]
   }
+
+  static country_stats() {
+    return database('olympic')
+      .select('team', database.raw('ARRAY_AGG(DISTINCT sport) AS sports'))
+      .groupBy('team')
+      .orderBy('team');
+  }
 }
 
  module.exports = Olympian;

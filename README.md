@@ -1,5 +1,5 @@
 # Koroibos
-This repo contains a Node API that exposes 6 endpoints. They display analytical data from the 2016 Summer Olympics. These endpoints are tested and deployed to production within 2 days (it was a 48-hour take home challenge from Turing school's backend program).
+This repo contains a Node API that exposes 7 endpoints. They display analytical data from the 2016 Summer Olympics. These endpoints are tested and deployed to production within 2 days (it was a 48-hour take home challenge from Turing school's backend program).
 
 
 #### Getting Started
