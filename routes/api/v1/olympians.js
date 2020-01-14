@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const olympian = require('../../../models/olympian.js');
+const cors = require('cors')
 
-router.get('/olympians', (request, response) => {
+router.get('/olympians', cors(), (request, response) => {
   let age = request.query.age;
 
   if (age === 'youngest') {
@@ -33,7 +34,7 @@ router.get('/olympians', (request, response) => {
     }
 });
 
-router.get('/olympian_stats', async (request, response) => {
+router.get('/olympian_stats', cors(), async (request, response) => {
   let temp = await Promise.all(olympian.stats())
     .then((data) => {
       let result = {
