@@ -5,7 +5,7 @@
     "version": "1.0",
     "description": "A short API doc describes some of the endpoints for the Koroibos API through the Swagger specification"
   },
-  "host": "localhost:3000",
+  "host": "koroibos-olympic-2020.herokuapp.com/api/v1/olympians",
   "servers": [
     {
       "url": "http://localhost:3000"
