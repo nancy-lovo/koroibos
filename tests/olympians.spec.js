@@ -195,4 +195,26 @@ describe('test get all olympians', () => {
       expect(res.body.message).toEqual('Not Found');
     });
   });
+
+  describe('test GET country stats', () => {
+    it('happy path', async () => {
+      const res = await request(app).get("/api/v1/country_stats");
+
+      expect(res.statusCode).toBe(200);
+
+      expect(res.body).toHaveProperty('countries');
+      expect(res.body['countries'][0]).toHaveProperty('team');
+      expect(res.body['countries'][0]).toHaveProperty('sports');
+
+      expect(res.body['countries'][0].team).toEqual('New Zealand')
+      expect(res.body['countries'][0].sports).toEqual(['Equestrianism'])
+    });
+
+    it('sad path', async () => {
+      const res = await request(app).get("/api/v1/countrystats");
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual('Not Found');
+    });
+  });
 });
